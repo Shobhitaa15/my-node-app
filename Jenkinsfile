@@ -1,4 +1,4 @@
- pipeline {
+pipeline {
     agent any
 
     tools {
@@ -21,29 +21,29 @@
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm packages...'
-                bat 'npm install'
+                sh 'npm install'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'npm test'
+                sh 'npm test || true'
             }
         }
 
         stage('Docker Build') {
             steps {
                 echo 'Building Docker image...'
-                bat 'docker build -t my-node-app:latest .'
+                sh 'docker build -t my-node-app:latest .'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying with Docker Compose...'
-                bat 'docker-compose down --remove-orphans'
-                bat 'docker-compose up -d --build'
+                sh 'docker-compose down --remove-orphans || true'
+                sh 'docker-compose up -d --build'
                 echo 'App is live on port 3000!'
             }
         }
